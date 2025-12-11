@@ -22,6 +22,7 @@ export async function GET(
         categoryId: products.categoryId,
         categoryName: categories.name,
         price: products.price,
+        unit: products.unit,
         quantity: products.quantity,
         reorderLevel: products.reorderLevel,
       })

@@ -22,6 +22,7 @@ export async function GET(request: Request) {
         supplierId: products.supplierId,
         supplierName: suppliers.name,
         price: products.price,
+        unit: products.unit,
         quantity: products.quantity,
         reorderLevel: products.reorderLevel,
         createdAt: products.createdAt,
