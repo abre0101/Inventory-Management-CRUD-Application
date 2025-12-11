@@ -5,6 +5,7 @@ import { relations } from 'drizzle-orm';
 export const categories = pgTable('categories', {
   id: serial('id').primaryKey(),
   name: text('name').notNull().unique(),
+  skuPrefix: text('sku_prefix').notNull().unique(),
   description: text('description'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
@@ -20,6 +21,14 @@ export const suppliers = pgTable('suppliers', {
   address: text('address'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+// Category-Supplier junction table (many-to-many relationship)
+export const categorySuppliers = pgTable('category_suppliers', {
+  id: serial('id').primaryKey(),
+  categoryId: integer('category_id').references(() => categories.id).notNull(),
+  supplierId: integer('supplier_id').references(() => suppliers.id).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
 // Products table (renamed from inventory)
@@ -51,10 +60,23 @@ export const stockMovements = pgTable('stock_movements', {
 // Relations
 export const categoriesRelations = relations(categories, ({ many }) => ({
   products: many(products),
+  categorySuppliers: many(categorySuppliers),
 }));
 
 export const suppliersRelations = relations(suppliers, ({ many }) => ({
   products: many(products),
+  categorySuppliers: many(categorySuppliers),
+}));
+
+export const categorySuppliersRelations = relations(categorySuppliers, ({ one }) => ({
+  category: one(categories, {
+    fields: [categorySuppliers.categoryId],
+    references: [categories.id],
+  }),
+  supplier: one(suppliers, {
+    fields: [categorySuppliers.supplierId],
+    references: [suppliers.id],
+  }),
 }));
 
 export const productsRelations = relations(products, ({ one, many }) => ({
@@ -82,6 +104,9 @@ export type NewCategory = typeof categories.$inferInsert;
 
 export type Supplier = typeof suppliers.$inferSelect;
 export type NewSupplier = typeof suppliers.$inferInsert;
+
+export type CategorySupplier = typeof categorySuppliers.$inferSelect;
+export type NewCategorySupplier = typeof categorySuppliers.$inferInsert;
 
 export type Product = typeof products.$inferSelect;
 export type NewProduct = typeof products.$inferInsert;

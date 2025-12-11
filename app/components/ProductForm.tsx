@@ -11,6 +11,8 @@ interface ProductFormProps {
 export default function ProductForm({ item, onSubmit, onCancel }: ProductFormProps) {
   const [categories, setCategories] = useState<any[]>([]);
   const [suppliers, setSuppliers] = useState<any[]>([]);
+  const [allSuppliers, setAllSuppliers] = useState<any[]>([]);
+  const [nextSKU, setNextSKU] = useState<string>('');
   const [formData, setFormData] = useState({
     sku: item?.sku || '',
     name: item?.name || '',
@@ -24,8 +26,21 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
 
   useEffect(() => {
     fetchCategories();
-    fetchSuppliers();
+    fetchAllSuppliers();
   }, []);
+
+  // Fetch suppliers and generate SKU when category changes
+  useEffect(() => {
+    if (formData.categoryId) {
+      fetchSuppliersByCategory(formData.categoryId);
+      if (!item) { // Only generate SKU for new products
+        fetchNextSKU(formData.categoryId);
+      }
+    } else {
+      setSuppliers(allSuppliers);
+      setNextSKU('');
+    }
+  }, [formData.categoryId, allSuppliers, item]);
 
   const fetchCategories = async () => {
     const res = await fetch('/api/categories');
@@ -33,19 +48,44 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
     setCategories(data);
   };
 
-  const fetchSuppliers = async () => {
+  const fetchAllSuppliers = async () => {
     const res = await fetch('/api/suppliers');
     const data = await res.json();
+    setAllSuppliers(data);
     setSuppliers(data);
+  };
+
+  const fetchSuppliersByCategory = async (categoryId: number) => {
+    const res = await fetch(`/api/suppliers/by-category/${categoryId}`);
+    const data = await res.json();
+    setSuppliers(data);
+    
+    // Reset supplier selection if current supplier is not in the filtered list
+    if (formData.supplierId && !data.find((s: any) => s.id === formData.supplierId)) {
+      setFormData(prev => ({ ...prev, supplierId: null }));
+    }
+  };
+
+  const fetchNextSKU = async (categoryId: number) => {
+    const res = await fetch(`/api/products/next-sku/${categoryId}`);
+    const data = await res.json();
+    setNextSKU(data.sku);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({
+    const submitData: any = {
       ...formData,
       categoryId: formData.categoryId ? parseInt(formData.categoryId as any) : null,
       supplierId: formData.supplierId ? parseInt(formData.supplierId as any) : null,
-    });
+    };
+    
+    // Remove SKU for new products (it will be auto-generated)
+    if (!item) {
+      delete submitData.sku;
+    }
+    
+    onSubmit(submitData);
   };
 
   const inputStyle = {
@@ -71,13 +111,18 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
         <div>
-          <label style={labelStyle}>SKU *</label>
+          <label style={labelStyle}>SKU {item ? '' : '(Auto-generated)'}</label>
           <input
             type="text"
-            value={formData.sku}
-            onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
-            style={inputStyle}
-            required
+            value={item ? formData.sku : (nextSKU || 'Select category first')}
+            style={{
+              ...inputStyle,
+              backgroundColor: '#f8fafc',
+              color: '#64748b',
+              cursor: 'not-allowed',
+            }}
+            readOnly
+            disabled
           />
         </div>
         <div>
@@ -122,12 +167,20 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
             value={formData.supplierId || ''}
             onChange={(e) => setFormData({ ...formData, supplierId: e.target.value ? parseInt(e.target.value) : null })}
             style={inputStyle}
+            disabled={!formData.categoryId}
           >
-            <option value="">Select Supplier</option>
+            <option value="">
+              {formData.categoryId ? 'Select Supplier' : 'Select Category First'}
+            </option>
             {suppliers.map((sup) => (
               <option key={sup.id} value={sup.id}>{sup.name}</option>
             ))}
           </select>
+          {formData.categoryId && suppliers.length === 0 && (
+            <p style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '0.25rem' }}>
+              No suppliers available for this category
+            </p>
+          )}
         </div>
       </div>
 

@@ -18,11 +18,11 @@ async function seed() {
     const { data: cats, error: catError } = await supabase
       .from('categories')
       .insert([
-        { name: 'Coffee & Tea', description: 'Ethiopian coffee beans and tea products' },
-        { name: 'Spices & Grains', description: 'Berbere, teff, and other Ethiopian spices' },
-        { name: 'Textiles', description: 'Traditional Ethiopian clothing and fabrics' },
-        { name: 'Handicrafts', description: 'Ethiopian handmade crafts and art' },
-        { name: 'Electronics', description: 'Electronic devices and accessories' },
+        { name: 'Coffee & Tea', sku_prefix: 'COFFEE', description: 'Ethiopian coffee beans and tea products' },
+        { name: 'Spices & Grains', sku_prefix: 'SPICE', description: 'Berbere, teff, and other Ethiopian spices' },
+        { name: 'Textiles', sku_prefix: 'TEXT', description: 'Traditional Ethiopian clothing and fabrics' },
+        { name: 'Handicrafts', sku_prefix: 'CRAFT', description: 'Ethiopian handmade crafts and art' },
+        { name: 'Electronics', sku_prefix: 'ELEC', description: 'Electronic devices and accessories' },
       ])
       .select();
     
@@ -62,6 +62,29 @@ async function seed() {
     
     if (supError) throw supError;
     console.log('✓ Suppliers created');
+
+    // Add category-supplier relationships
+    const { error: catSupError } = await supabase
+      .from('category_suppliers')
+      .insert([
+        // Coffee & Tea suppliers
+        { category_id: cats![0].id, supplier_id: sups![0].id },
+        
+        // Spices & Grains suppliers
+        { category_id: cats![1].id, supplier_id: sups![1].id },
+        
+        // Textiles suppliers
+        { category_id: cats![2].id, supplier_id: sups![2].id },
+        
+        // Handicrafts suppliers
+        { category_id: cats![3].id, supplier_id: sups![2].id },
+        
+        // Electronics suppliers
+        { category_id: cats![4].id, supplier_id: sups![3].id },
+      ]);
+    
+    if (catSupError) throw catSupError;
+    console.log('✓ Category-Supplier relationships created');
 
     // Add products
     const { error: prodError } = await supabase
