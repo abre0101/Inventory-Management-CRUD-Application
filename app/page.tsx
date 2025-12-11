@@ -98,12 +98,29 @@ export default function Home() {
 
   const handleExport = async () => {
     try {
-      const res = await fetch('/api/inventory/export');
+      // Build query params with current filters
+      const params = new URLSearchParams();
+      if (searchTerm) params.append('search', searchTerm);
+      if (selectedCategory) params.append('categoryId', selectedCategory);
+      if (showLowStock) params.append('lowStock', 'true');
+
+      const res = await fetch(`/api/inventory/export?${params.toString()}`);
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `inventory-export-${new Date().toISOString().split('T')[0]}.csv`;
+      
+      // Generate filename based on filters
+      let filename = 'inventory-export';
+      if (selectedCategory) {
+        const categoryName = categories.find(c => c.id === parseInt(selectedCategory))?.name || 'filtered';
+        filename += `-${categoryName.toLowerCase().replace(/\s+/g, '-')}`;
+      }
+      if (showLowStock) filename += '-low-stock';
+      if (searchTerm) filename += '-search';
+      filename += `-${new Date().toISOString().split('T')[0]}.csv`;
+      
+      a.download = filename;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
