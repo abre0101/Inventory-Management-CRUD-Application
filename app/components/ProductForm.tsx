@@ -64,10 +64,11 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
     try {
       const res = await fetch(`/api/suppliers/by-category/${categoryId}`);
       const data = await res.json();
-      setSuppliers(Array.isArray(data) ? data : []);
+      const suppliersList = Array.isArray(data) ? data : [];
+      setSuppliers(suppliersList);
       
       // Reset supplier selection if current supplier is not in the filtered list
-      if (formData.supplierId && !data.find((s: any) => s.id === formData.supplierId)) {
+      if (formData.supplierId && !suppliersList.find((s: any) => s.id === formData.supplierId)) {
         setFormData(prev => ({ ...prev, supplierId: null }));
       }
     } catch (error) {
