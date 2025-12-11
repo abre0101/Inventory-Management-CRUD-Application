@@ -1,0 +1,4 @@
+SKU,Name,Description,Category,Supplier,Price,Quantity,Reorder Level
+PROD-001,"Sample Product 1","This is a sample product description","Electronics","Supplier A",99.99,50,10
+PROD-002,"Sample Product 2","Another sample product","Office Supplies","Supplier B",29.99,100,20
+PROD-003,"Sample Product 3","Third sample product","Electronics","Supplier A",149.99,25,5
