@@ -184,7 +184,7 @@ export default function Home() {
               }}>
                 📦 Inventory Management
               </h1>
-              <div style={{ display: 'flex', gap: '1.5rem', marginTop: '0.75rem' }}>
+              <div style={{ display: 'flex', gap: '1.5rem', marginTop: '0.75rem', flexWrap: 'wrap' }}>
                 <Link href="/dashboard" style={{ 
                   color: '#3b82f6', 
                   textDecoration: 'none', 
@@ -220,6 +220,30 @@ export default function Home() {
                   transition: 'color 0.2s'
                 }}>
                   🏢 Suppliers
+                </Link>
+                <Link href="/categories" style={{ 
+                  color: '#3b82f6', 
+                  textDecoration: 'none', 
+                  fontSize: '0.9375rem',
+                  fontWeight: '500',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.375rem',
+                  transition: 'color 0.2s'
+                }}>
+                  📂 Categories
+                </Link>
+                <Link href="/suppliers-manage" style={{ 
+                  color: '#3b82f6', 
+                  textDecoration: 'none', 
+                  fontSize: '0.9375rem',
+                  fontWeight: '500',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.375rem',
+                  transition: 'color 0.2s'
+                }}>
+                  ⚙️ Manage Suppliers
                 </Link>
               </div>
             </div>
