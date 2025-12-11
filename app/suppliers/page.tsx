@@ -155,6 +155,9 @@ export default function SuppliersPage() {
                         <div style={{ textAlign: 'right' }}>
                           <div style={{ fontSize: '1.125rem', fontWeight: '600', color: '#111827' }}>
                             {parseFloat(product.price).toFixed(2)} Birr
+                            <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '500', display: 'block' }}>
+                              per {product.unit || 'piece'}
+                            </span>
                           </div>
                           <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
                             Stock: {product.quantity}

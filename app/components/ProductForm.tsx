@@ -21,6 +21,7 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
     supplierId: item?.supplierId || null,
     quantity: item?.quantity || 0,
     price: item?.price || '0',
+    unit: item?.unit || 'piece',
     reorderLevel: item?.reorderLevel || 10,
   });
 
@@ -94,7 +95,7 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
       supplierId: formData.supplierId ? parseInt(formData.supplierId as any) : null,
     };
     
-    // Remove SKU for new products (it will be auto-generated)
+  
     if (!item) {
       delete submitData.sku;
     }
@@ -198,7 +199,7 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '1rem' }}>
         <div>
           <label style={labelStyle}>Quantity *</label>
           <input
@@ -208,6 +209,26 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
             style={inputStyle}
             required
           />
+        </div>
+        <div>
+          <label style={labelStyle}>Unit *</label>
+          <select
+            value={formData.unit}
+            onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
+            style={inputStyle}
+            required
+          >
+            <option value="piece">Piece</option>
+            <option value="kg">Kilogram (kg)</option>
+            <option value="g">Gram (g)</option>
+            <option value="liter">Liter</option>
+            <option value="ml">Milliliter (ml)</option>
+            <option value="box">Box</option>
+            <option value="pack">Pack</option>
+            <option value="bottle">Bottle</option>
+            <option value="bag">Bag</option>
+            <option value="meter">Meter</option>
+          </select>
         </div>
         <div>
           <label style={labelStyle}>Price (Birr) *</label>

@@ -514,6 +514,9 @@ export default function Home() {
                       </td>
                       <td style={{ padding: '1.125rem 1.5rem', color: '#0f172a', fontWeight: '600', fontSize: '0.9375rem' }}>
                         {parseFloat(item.price).toFixed(2)} Birr
+                        <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '500', marginLeft: '0.25rem' }}>
+                          /{item.unit || 'piece'}
+                        </span>
                       </td>
                       <td style={{ padding: '1.125rem 1.5rem' }}>
                         <div style={{ display: 'flex', gap: '0.625rem', flexWrap: 'wrap' }}>

@@ -40,6 +40,7 @@ export const products = pgTable('products', {
   categoryId: integer('category_id').references(() => categories.id),
   supplierId: integer('supplier_id').references(() => suppliers.id),
   price: decimal('price', { precision: 10, scale: 2 }).notNull().default('0'),
+  unit: text('unit').default('piece'), // piece, kg, liter, box, etc.
   quantity: integer('quantity').notNull().default(0),
   reorderLevel: integer('reorder_level').default(10),
   createdAt: timestamp('created_at').defaultNow().notNull(),
