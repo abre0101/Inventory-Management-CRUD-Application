@@ -4,12 +4,14 @@ import { products, categories } from '@/lib/db/schema';
 import { eq, desc } from 'drizzle-orm';
 
 export async function GET(
-  request: Request,
+  _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
     const supplierId = parseInt(id);
+    
+    console.log('Fetching products for supplier:', supplierId);
     
     const items = await db
       .select({
@@ -27,6 +29,8 @@ export async function GET(
       .leftJoin(categories, eq(products.categoryId, categories.id))
       .where(eq(products.supplierId, supplierId))
       .orderBy(desc(products.createdAt));
+    
+    console.log('Found products:', items.length);
     
     return NextResponse.json(items);
   } catch (error) {
