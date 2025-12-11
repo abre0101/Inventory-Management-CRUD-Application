@@ -420,15 +420,16 @@ export default function Home() {
                 <th style={{ padding: '1.125rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Product Name</th>
                 <th style={{ padding: '1.125rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Category</th>
                 <th style={{ padding: '1.125rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Supplier</th>
-                <th style={{ padding: '1.125rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem', letterSpacing: '0.05em', textTransform: 'uppercase', width: '100px' }}>Qty</th>
-                <th style={{ padding: '1.125rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem', letterSpacing: '0.05em', textTransform: 'uppercase', width: '100px' }}>Price</th>
+                <th style={{ padding: '1.125rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem', letterSpacing: '0.05em', textTransform: 'uppercase', width: '90px' }}>Qty</th>
+                <th style={{ padding: '1.125rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem', letterSpacing: '0.05em', textTransform: 'uppercase', width: '100px' }}>Reorder</th>
+                <th style={{ padding: '1.125rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem', letterSpacing: '0.05em', textTransform: 'uppercase', width: '110px' }}>Price</th>
                 <th style={{ padding: '1.125rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem', letterSpacing: '0.05em', textTransform: 'uppercase', width: '200px' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {items.length === 0 ? (
                 <tr>
-                  <td colSpan={7} style={{ padding: '4rem 2rem', textAlign: 'center', color: '#94a3b8' }}>
+                  <td colSpan={8} style={{ padding: '4rem 2rem', textAlign: 'center', color: '#94a3b8' }}>
                     <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📦</div>
                     <div style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '0.5rem' }}>No products found</div>
                     <div style={{ fontSize: '0.9375rem' }}>Click "Add Product" to get started</div>
@@ -467,6 +468,25 @@ export default function Home() {
                         fontSize: '0.9375rem'
                       }}>
                         {item.quantity}
+                      </td>
+                      <td style={{ 
+                        padding: '1.125rem 1.5rem', 
+                        fontSize: '0.9375rem'
+                      }}>
+                        <div style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.375rem',
+                          backgroundColor: isLowStock ? '#fef2f2' : '#f0fdf4',
+                          color: isLowStock ? '#dc2626' : '#16a34a',
+                          padding: '0.375rem 0.75rem',
+                          borderRadius: '0.5rem',
+                          border: `1px solid ${isLowStock ? '#fecaca' : '#bbf7d0'}`,
+                          fontWeight: '600',
+                          fontSize: '0.875rem'
+                        }}>
+                          {isLowStock ? '⚠️' : '✓'} {item.reorderLevel}
+                        </div>
                       </td>
                       <td style={{ padding: '1.125rem 1.5rem', color: '#0f172a', fontWeight: '600', fontSize: '0.9375rem' }}>
                         {parseFloat(item.price).toFixed(2)} Birr
