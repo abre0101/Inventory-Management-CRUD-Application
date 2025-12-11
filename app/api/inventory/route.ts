@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { products, categories, suppliers } from '@/lib/db/schema';
 import { desc, like, or, eq, sql } from 'drizzle-orm';
+import { generateSKU } from '@/lib/utils/sku-generator';
 
 export async function GET(request: Request) {
   try {
@@ -63,6 +64,12 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    
+    // Auto-generate SKU if categoryId is provided and SKU is not
+    if (body.categoryId && !body.sku) {
+      body.sku = await generateSKU(body.categoryId);
+    }
+    
     const newItem = await db.insert(products).values(body).returning();
     return NextResponse.json(newItem[0]);
   } catch (error) {

@@ -452,7 +452,7 @@ export default function Home() {
                         {item.quantity}
                       </td>
                       <td style={{ padding: '1.125rem 1.5rem', color: '#0f172a', fontWeight: '600', fontSize: '0.9375rem' }}>
-                        ${parseFloat(item.price).toFixed(2)}
+                        {parseFloat(item.price).toFixed(2)} Birr
                       </td>
                       <td style={{ padding: '1.125rem 1.5rem' }}>
                         <div style={{ display: 'flex', gap: '0.625rem', flexWrap: 'wrap' }}>
