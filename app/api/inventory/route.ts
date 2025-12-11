@@ -31,29 +31,29 @@ export async function GET(request: Request) {
       .leftJoin(suppliers, eq(products.supplierId, suppliers.id))
       .orderBy(desc(products.createdAt));
 
-    // Apply filters
-    const conditions = [];
+    const items = await query;
+    
+    // Apply filters in memory (simpler approach)
+    let filteredItems = items;
     
     if (search) {
-      conditions.push(
-        or(
-          like(products.name, `%${search}%`),
-          like(products.sku, `%${search}%`),
-          like(products.description, `%${search}%`)
-        )
+      const searchLower = search.toLowerCase();
+      filteredItems = filteredItems.filter(item => 
+        item.name.toLowerCase().includes(searchLower) ||
+        item.sku.toLowerCase().includes(searchLower) ||
+        (item.description && item.description.toLowerCase().includes(searchLower))
       );
     }
 
     if (categoryId) {
-      conditions.push(eq(products.categoryId, parseInt(categoryId)));
+      filteredItems = filteredItems.filter(item => item.categoryId === parseInt(categoryId));
     }
 
     if (lowStock === 'true') {
-      conditions.push(sql`${products.quantity} <= ${products.reorderLevel}`);
+      filteredItems = filteredItems.filter(item => item.quantity <= (item.reorderLevel || 10));
     }
 
-    const items = await query;
-    return NextResponse.json(items);
+    return NextResponse.json(filteredItems);
   } catch (error) {
     console.error('Fetch error:', error);
     return NextResponse.json({ error: 'Failed to fetch inventory' }, { status: 500 });

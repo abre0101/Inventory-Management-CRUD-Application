@@ -48,14 +48,19 @@ export default function Home() {
   }, [searchTerm, selectedCategory, showLowStock]);
 
   const fetchItems = async () => {
-    const params = new URLSearchParams();
-    if (searchTerm) params.append('search', searchTerm);
-    if (selectedCategory) params.append('categoryId', selectedCategory);
-    if (showLowStock) params.append('lowStock', 'true');
+    try {
+      const params = new URLSearchParams();
+      if (searchTerm) params.append('search', searchTerm);
+      if (selectedCategory) params.append('categoryId', selectedCategory);
+      if (showLowStock) params.append('lowStock', 'true');
 
-    const res = await fetch(`/api/inventory?${params.toString()}`);
-    const data = await res.json();
-    setItems(data);
+      const res = await fetch(`/api/inventory?${params.toString()}`);
+      const data = await res.json();
+      setItems(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Error fetching items:', error);
+      setItems([]);
+    }
   };
 
   const fetchCategories = async () => {
