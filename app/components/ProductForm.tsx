@@ -204,7 +204,7 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
           <input
             type="number"
             value={formData.quantity}
-            onChange={(e) => setFormData({ ...formData, quantity: parseInt(e.target.value) })}
+            onChange={(e) => setFormData({ ...formData, quantity: parseInt(e.target.value) || 0 })}
             style={inputStyle}
             required
           />
@@ -225,7 +225,7 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
           <input
             type="number"
             value={formData.reorderLevel}
-            onChange={(e) => setFormData({ ...formData, reorderLevel: parseInt(e.target.value) })}
+            onChange={(e) => setFormData({ ...formData, reorderLevel: parseInt(e.target.value) || 10 })}
             style={inputStyle}
           />
         </div>
