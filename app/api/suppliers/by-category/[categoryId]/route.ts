@@ -5,10 +5,11 @@ import { eq } from 'drizzle-orm';
 
 export async function GET(
   request: Request,
-  { params }: { params: { categoryId: string } }
+  { params }: { params: Promise<{ categoryId: string }> }
 ) {
   try {
-    const categoryId = parseInt(params.categoryId);
+    const { categoryId: categoryIdStr } = await params;
+    const categoryId = parseInt(categoryIdStr);
     
     // Get suppliers associated with this category
     const result = await db
