@@ -37,10 +37,10 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
         fetchNextSKU(formData.categoryId);
       }
     } else {
-      setSuppliers(allSuppliers);
+      setSuppliers([]);
       setNextSKU('');
     }
-  }, [formData.categoryId, allSuppliers, item]);
+  }, [formData.categoryId, item]);
 
   const fetchCategories = async () => {
     const res = await fetch('/api/categories');
@@ -49,27 +49,41 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
   };
 
   const fetchAllSuppliers = async () => {
-    const res = await fetch('/api/suppliers');
-    const data = await res.json();
-    setAllSuppliers(data);
-    setSuppliers(data);
+    try {
+      const res = await fetch('/api/suppliers');
+      const data = await res.json();
+      setAllSuppliers(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Error fetching suppliers:', error);
+      setAllSuppliers([]);
+    }
   };
 
   const fetchSuppliersByCategory = async (categoryId: number) => {
-    const res = await fetch(`/api/suppliers/by-category/${categoryId}`);
-    const data = await res.json();
-    setSuppliers(data);
-    
-    // Reset supplier selection if current supplier is not in the filtered list
-    if (formData.supplierId && !data.find((s: any) => s.id === formData.supplierId)) {
-      setFormData(prev => ({ ...prev, supplierId: null }));
+    try {
+      const res = await fetch(`/api/suppliers/by-category/${categoryId}`);
+      const data = await res.json();
+      setSuppliers(Array.isArray(data) ? data : []);
+      
+      // Reset supplier selection if current supplier is not in the filtered list
+      if (formData.supplierId && !data.find((s: any) => s.id === formData.supplierId)) {
+        setFormData(prev => ({ ...prev, supplierId: null }));
+      }
+    } catch (error) {
+      console.error('Error fetching suppliers:', error);
+      setSuppliers([]);
     }
   };
 
   const fetchNextSKU = async (categoryId: number) => {
-    const res = await fetch(`/api/products/next-sku/${categoryId}`);
-    const data = await res.json();
-    setNextSKU(data.sku);
+    try {
+      const res = await fetch(`/api/products/next-sku/${categoryId}`);
+      const data = await res.json();
+      setNextSKU(data.sku || '');
+    } catch (error) {
+      console.error('Error fetching next SKU:', error);
+      setNextSKU('');
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
