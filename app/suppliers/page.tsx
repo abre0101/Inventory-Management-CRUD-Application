@@ -23,9 +23,10 @@ export default function SuppliersPage() {
     try {
       const res = await fetch('/api/suppliers');
       const data = await res.json();
-      setSuppliers(data);
+      setSuppliers(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching suppliers:', error);
+      setSuppliers([]);
     } finally {
       setLoading(false);
     }
@@ -35,9 +36,10 @@ export default function SuppliersPage() {
     try {
       const res = await fetch(`/api/suppliers/${supplierId}/products`);
       const data = await res.json();
-      setSupplierProducts(data);
+      setSupplierProducts(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching supplier products:', error);
+      setSupplierProducts([]);
     }
   };
 
@@ -152,7 +154,7 @@ export default function SuppliersPage() {
                         </div>
                         <div style={{ textAlign: 'right' }}>
                           <div style={{ fontSize: '1.125rem', fontWeight: '600', color: '#111827' }}>
-                            ${parseFloat(product.price).toFixed(2)}
+                            {parseFloat(product.price).toFixed(2)} Birr
                           </div>
                           <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
                             Stock: {product.quantity}
