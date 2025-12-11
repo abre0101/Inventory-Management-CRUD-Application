@@ -210,7 +210,7 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
           />
         </div>
         <div>
-          <label style={labelStyle}>Price ($) *</label>
+          <label style={labelStyle}>Price (Birr) *</label>
           <input
             type="number"
             step="0.01"
