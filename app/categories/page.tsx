@@ -76,12 +76,37 @@ export default function CategoriesPage() {
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
             <div>
-              <h1 style={{ fontSize: '2rem', fontWeight: '700', color: '#0f172a', marginBottom: '0.5rem' }}>
-                📂 Categories
-              </h1>
-              <Link href="/" style={{ color: '#3b82f6', textDecoration: 'none', fontSize: '0.9375rem' }}>
+              <Link 
+                href="/" 
+                style={{ 
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.5rem 1rem',
+                  backgroundColor: '#f1f5f9',
+                  color: '#475569',
+                  textDecoration: 'none',
+                  borderRadius: '0.5rem',
+                  border: '2px solid #e2e8f0',
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  marginBottom: '1rem',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#e2e8f0';
+                  e.currentTarget.style.borderColor = '#cbd5e1';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f1f5f9';
+                  e.currentTarget.style.borderColor = '#e2e8f0';
+                }}
+              >
                 ← Back to Inventory
               </Link>
+              <h1 style={{ fontSize: '2rem', fontWeight: '700', color: '#0f172a' }}>
+                📂 Categories
+              </h1>
             </div>
             <button
               onClick={() => {

@@ -45,12 +45,37 @@ export default function StockMovementsPage() {
     <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', padding: '2rem' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         <div style={{ marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#111827', marginBottom: '0.5rem' }}>
-            Stock Movement History
-          </h1>
-          <Link href="/" style={{ color: '#2563eb', textDecoration: 'underline' }}>
+          <Link 
+            href="/" 
+            style={{ 
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.5rem 1rem',
+              backgroundColor: '#f1f5f9',
+              color: '#475569',
+              textDecoration: 'none',
+              borderRadius: '0.5rem',
+              border: '2px solid #e2e8f0',
+              fontSize: '0.875rem',
+              fontWeight: '600',
+              marginBottom: '1rem',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#e2e8f0';
+              e.currentTarget.style.borderColor = '#cbd5e1';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#f1f5f9';
+              e.currentTarget.style.borderColor = '#e2e8f0';
+            }}
+          >
             ← Back to Inventory
           </Link>
+          <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#111827' }}>
+            Stock Movement History
+          </h1>
         </div>
 
         {loading ? (

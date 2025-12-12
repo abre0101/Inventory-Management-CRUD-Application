@@ -68,18 +68,33 @@ export default function Dashboard() {
               Real-time inventory insights and metrics
             </p>
           </div>
-          <Link href="/" style={{ 
-            padding: '0.75rem 1.5rem',
-            backgroundColor: 'rgba(255,255,255,0.2)',
-            backdropFilter: 'blur(10px)',
-            color: 'white',
-            borderRadius: '0.75rem',
-            textDecoration: 'none',
-            fontWeight: '600',
-            border: '1px solid rgba(255,255,255,0.3)',
-            transition: 'all 0.3s ease',
-            display: 'inline-block'
-          }}>
+          <Link 
+            href="/" 
+            style={{ 
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.75rem 1.5rem',
+              backgroundColor: 'rgba(255,255,255,0.95)',
+              color: '#475569',
+              borderRadius: '0.75rem',
+              textDecoration: 'none',
+              fontWeight: '600',
+              border: '2px solid rgba(255,255,255,0.5)',
+              boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+              transition: 'all 0.3s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'white';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0,0,0,0.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.95)';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.1)';
+            }}
+          >
             ← Back to Inventory
           </Link>
         </div>
