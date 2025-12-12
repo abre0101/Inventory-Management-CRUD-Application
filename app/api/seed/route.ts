@@ -6,11 +6,11 @@ export async function POST() {
   try {
     // Add categories
     const cats = await db.insert(categories).values([
-      { name: 'Coffee & Tea', description: 'Ethiopian coffee beans and tea products' },
-      { name: 'Spices & Grains', description: 'Berbere, teff, and other Ethiopian spices' },
-      { name: 'Textiles', description: 'Traditional Ethiopian clothing and fabrics' },
-      { name: 'Handicrafts', description: 'Ethiopian handmade crafts and art' },
-      { name: 'Electronics', description: 'Electronic devices and accessories' },
+      { name: 'Coffee & Tea', skuPrefix: 'COFFEE', description: 'Ethiopian coffee beans and tea products' },
+      { name: 'Spices & Grains', skuPrefix: 'SPICE', description: 'Berbere, teff, and other Ethiopian spices' },
+      { name: 'Textiles', skuPrefix: 'TEXT', description: 'Traditional Ethiopian clothing and fabrics' },
+      { name: 'Handicrafts', skuPrefix: 'CRAFT', description: 'Ethiopian handmade crafts and art' },
+      { name: 'Electronics', skuPrefix: 'ELEC', description: 'Electronic devices and accessories' },
     ]).returning();
 
     // Add suppliers

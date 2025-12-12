@@ -1,14 +1,14 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { suppliers, categorySuppliers } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 
 export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ categoryId: string }> }
+  request: NextRequest,
+  context: { params: Promise<{ categoryId: string }> }
 ) {
   try {
-    const { categoryId: categoryIdStr } = await params;
+    const { categoryId: categoryIdStr } = await context.params;
     const categoryId = parseInt(categoryIdStr);
     
     // Get suppliers associated with this category

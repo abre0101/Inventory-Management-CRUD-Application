@@ -1,14 +1,14 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { products, categories } from '@/lib/db/schema';
 import { eq, desc } from 'drizzle-orm';
 
 export async function GET(
-  _request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  _request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params;
+    const { id } = await context.params;
     const supplierId = parseInt(id);
     
     console.log('Fetching products for supplier:', supplierId);
