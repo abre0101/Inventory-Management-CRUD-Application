@@ -16,6 +16,66 @@ export default function Dashboard() {
     setStats(data);
   };
 
+  const exportToCSV = () => {
+    if (!stats) return;
+
+    const csvData = [
+      ['Dashboard Analytics Report'],
+      ['Generated:', new Date().toLocaleString()],
+      [''],
+      ['Summary Statistics'],
+      ['Metric', 'Value'],
+      ['Total Products', stats.totalProducts],
+      ['Total Inventory Value', `${parseFloat(stats.totalValue || 0).toFixed(2)} Birr`],
+      ['Low Stock Items', stats.lowStockCount],
+      [''],
+      ['Products by Category'],
+      ['Category', 'Count'],
+      ...stats.productsByCategory.map((cat: any) => [cat.categoryName || 'Uncategorized', cat.count]),
+      [''],
+      ['Low Stock Items Detail'],
+      ['SKU', 'Name', 'Current Stock', 'Reorder Level'],
+      ...stats.lowStockItems.map((item: any) => [item.sku, item.name, item.quantity, item.reorderLevel])
+    ];
+
+    const csv = csvData.map(row => row.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `dashboard-report-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
+  const exportToJSON = () => {
+    if (!stats) return;
+
+    const jsonData = {
+      generatedAt: new Date().toISOString(),
+      summary: {
+        totalProducts: stats.totalProducts,
+        totalValue: parseFloat(stats.totalValue || 0),
+        lowStockCount: stats.lowStockCount
+      },
+      productsByCategory: stats.productsByCategory,
+      lowStockItems: stats.lowStockItems
+    };
+
+    const json = JSON.stringify(jsonData, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `dashboard-report-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
+  const printReport = () => {
+    window.print();
+  };
+
   if (!stats) {
     return (
       <div style={{ 
@@ -38,12 +98,26 @@ export default function Dashboard() {
   }
 
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      padding: '2rem 1.5rem'
-    }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+    <>
+      <style>{`
+        @media print {
+          body {
+            background: white !important;
+          }
+          button, a {
+            display: none !important;
+          }
+          .no-print {
+            display: none !important;
+          }
+        }
+      `}</style>
+      <div style={{ 
+        minHeight: '100vh', 
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        padding: '2rem 1.5rem'
+      }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         {/* Header */}
         <div style={{ 
           marginBottom: '2.5rem',
@@ -68,35 +142,170 @@ export default function Dashboard() {
               Real-time inventory insights and metrics
             </p>
           </div>
-          <Link 
-            href="/" 
-            style={{ 
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.75rem 1.5rem',
-              backgroundColor: 'rgba(255,255,255,0.95)',
-              color: '#475569',
-              borderRadius: '0.75rem',
-              textDecoration: 'none',
-              fontWeight: '600',
-              border: '2px solid rgba(255,255,255,0.5)',
-              boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'white';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0,0,0,0.1)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.95)';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.1)';
-            }}
-          >
-            ← Back to Inventory
-          </Link>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            {/* Export Dropdown */}
+            <div style={{ position: 'relative', display: 'inline-block' }}>
+              <button
+                onClick={(e) => {
+                  const menu = e.currentTarget.nextElementSibling as HTMLElement;
+                  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.75rem 1.5rem',
+                  backgroundColor: 'rgba(255,255,255,0.95)',
+                  color: '#475569',
+                  borderRadius: '0.75rem',
+                  border: '2px solid rgba(255,255,255,0.5)',
+                  boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'white';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0,0,0,0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.95)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.1)';
+                }}
+              >
+                📥 Export
+              </button>
+              <div
+                style={{
+                  display: 'none',
+                  position: 'absolute',
+                  top: '100%',
+                  right: '0',
+                  marginTop: '0.5rem',
+                  backgroundColor: 'white',
+                  borderRadius: '0.75rem',
+                  boxShadow: '0 10px 25px -5px rgba(0,0,0,0.2)',
+                  border: '1px solid #e2e8f0',
+                  minWidth: '200px',
+                  zIndex: 50,
+                  overflow: 'hidden',
+                }}
+                onClick={(e) => {
+                  (e.currentTarget as HTMLElement).style.display = 'none';
+                }}
+              >
+                <button
+                  onClick={exportToCSV}
+                  style={{
+                    width: '100%',
+                    padding: '0.875rem 1.25rem',
+                    textAlign: 'left',
+                    backgroundColor: 'white',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '0.9375rem',
+                    fontWeight: '500',
+                    color: '#334155',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    transition: 'background-color 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#f8fafc';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'white';
+                  }}
+                >
+                  📄 Export as CSV
+                </button>
+                <button
+                  onClick={exportToJSON}
+                  style={{
+                    width: '100%',
+                    padding: '0.875rem 1.25rem',
+                    textAlign: 'left',
+                    backgroundColor: 'white',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '0.9375rem',
+                    fontWeight: '500',
+                    color: '#334155',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    transition: 'background-color 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#f8fafc';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'white';
+                  }}
+                >
+                  📋 Export as JSON
+                </button>
+                <button
+                  onClick={printReport}
+                  style={{
+                    width: '100%',
+                    padding: '0.875rem 1.25rem',
+                    textAlign: 'left',
+                    backgroundColor: 'white',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '0.9375rem',
+                    fontWeight: '500',
+                    color: '#334155',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    transition: 'background-color 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#f8fafc';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'white';
+                  }}
+                >
+                  🖨️ Print Report
+                </button>
+              </div>
+            </div>
+            <Link 
+              href="/" 
+              style={{ 
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.75rem 1.5rem',
+                backgroundColor: 'rgba(255,255,255,0.95)',
+                color: '#475569',
+                borderRadius: '0.75rem',
+                textDecoration: 'none',
+                fontWeight: '600',
+                border: '2px solid rgba(255,255,255,0.5)',
+                boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+                transition: 'all 0.3s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'white';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0,0,0,0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.95)';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0,0,0,0.1)';
+              }}
+            >
+              ← Back to Inventory
+            </Link>
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -483,7 +692,8 @@ export default function Dashboard() {
             })}
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
