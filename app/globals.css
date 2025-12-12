@@ -35,6 +35,11 @@
   box-sizing: border-box;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -42,6 +47,9 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.6;
+  overflow-x: hidden;
+  width: 100%;
+  min-width: 320px;
 }
 
 input, select, textarea, button {
@@ -64,4 +72,34 @@ button:hover {
 
 button:active {
   transform: translateY(0);
+}
+
+/* Mobile responsive tables */
+@media (max-width: 768px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+  
+  /* Make containers responsive */
+  div[style*="maxWidth"] {
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* Ensure images and content don't overflow */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Prevent horizontal scroll */
+.container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
