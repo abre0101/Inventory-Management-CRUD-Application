@@ -45,20 +45,30 @@ export async function DELETE(request: Request) {
     const categoryId = searchParams.get('categoryId');
     const supplierId = searchParams.get('supplierId');
     
-    if (!categoryId || !supplierId) {
-      return NextResponse.json({ error: 'Missing parameters' }, { status: 400 });
+    // If only supplierId is provided, delete all relationships for that supplier
+    if (supplierId && !categoryId) {
+      await db
+        .delete(categorySuppliers)
+        .where(eq(categorySuppliers.supplierId, parseInt(supplierId)));
+      
+      return NextResponse.json({ message: 'All supplier relationships deleted' });
     }
     
-    await db
-      .delete(categorySuppliers)
-      .where(
-        and(
-          eq(categorySuppliers.categoryId, parseInt(categoryId)),
-          eq(categorySuppliers.supplierId, parseInt(supplierId))
-        )
-      );
+    // If both are provided, delete specific relationship
+    if (categoryId && supplierId) {
+      await db
+        .delete(categorySuppliers)
+        .where(
+          and(
+            eq(categorySuppliers.categoryId, parseInt(categoryId)),
+            eq(categorySuppliers.supplierId, parseInt(supplierId))
+          )
+        );
+      
+      return NextResponse.json({ message: 'Relationship deleted' });
+    }
     
-    return NextResponse.json({ message: 'Relationship deleted' });
+    return NextResponse.json({ error: 'Missing parameters' }, { status: 400 });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to delete relationship' }, { status: 500 });
   }

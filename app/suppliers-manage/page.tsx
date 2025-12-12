@@ -55,6 +55,11 @@ export default function SuppliersManagePage() {
       });
       const data = await res.json();
       supplierId = data.id;
+      
+      // Delete existing category relationships
+      await fetch(`/api/category-suppliers?supplierId=${supplierId}`, {
+        method: 'DELETE',
+      });
     } else {
       const res = await fetch('/api/suppliers', {
         method: 'POST',
@@ -65,7 +70,7 @@ export default function SuppliersManagePage() {
       supplierId = data.id;
     }
 
-    // Update category relationships
+    // Add new category relationships
     if (supplierId && formData.categoryIds.length > 0) {
       for (const categoryId of formData.categoryIds) {
         await fetch('/api/category-suppliers', {
@@ -82,16 +87,34 @@ export default function SuppliersManagePage() {
     fetchSuppliers();
   };
 
-  const handleEdit = (supplier: any) => {
+  const handleEdit = async (supplier: any) => {
     setEditingSupplier(supplier);
-    setFormData({
-      name: supplier.name,
-      contactPerson: supplier.contactPerson || '',
-      email: supplier.email || '',
-      phone: supplier.phone || '',
-      address: supplier.address || '',
-      categoryIds: [],
-    });
+    
+    // Fetch existing category relationships
+    try {
+      const res = await fetch(`/api/suppliers/${supplier.id}/categories`);
+      const existingCategoryIds = await res.json();
+      
+      setFormData({
+        name: supplier.name,
+        contactPerson: supplier.contactPerson || '',
+        email: supplier.email || '',
+        phone: supplier.phone || '',
+        address: supplier.address || '',
+        categoryIds: Array.isArray(existingCategoryIds) ? existingCategoryIds : [],
+      });
+    } catch (error) {
+      console.error('Error loading supplier categories:', error);
+      setFormData({
+        name: supplier.name,
+        contactPerson: supplier.contactPerson || '',
+        email: supplier.email || '',
+        phone: supplier.phone || '',
+        address: supplier.address || '',
+        categoryIds: [],
+      });
+    }
+    
     setShowForm(true);
   };
 
