@@ -315,8 +315,9 @@ export default function Home() {
           </div>
         )}
 
+        {/* Desktop Table View */}
         <div className={styles.tableContainer}>
-          <table className={styles.table}>
+          <table className={`${styles.table} ${styles.desktopTable}`}>
             <thead>
               <tr>
                 <th>SKU</th>
@@ -434,6 +435,95 @@ export default function Home() {
               )}
             </tbody>
           </table>
+
+          {/* Mobile Card View */}
+          <div className={styles.mobileCard}>
+            {items.length === 0 ? (
+              <div style={{ padding: '3rem 2rem', textAlign: 'center', color: '#94a3b8' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📦</div>
+                <div style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '0.5rem' }}>No products found</div>
+                <div style={{ fontSize: '0.9375rem' }}>Click "Add Product" to get started</div>
+              </div>
+            ) : (
+              items.map((item) => {
+                const isLowStock = item.quantity <= item.reorderLevel;
+                return (
+                  <div key={item.id} className={`${styles.productCard} ${isLowStock ? styles.lowStock : ''}`}>
+                    <div className={styles.cardHeader}>
+                      <div className={styles.cardTitle}>
+                        {item.name}
+                        {isLowStock && <div style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '0.25rem' }}>⚠️ Low Stock</div>}
+                      </div>
+                      <div className={styles.cardSku}>{item.sku}</div>
+                    </div>
+                    
+                    <div className={styles.cardDetails}>
+                      <div className={styles.cardDetail}>
+                        <span className={styles.cardLabel}>Category</span>
+                        <span className={styles.cardValue}>{item.categoryName || '-'}</span>
+                      </div>
+                      <div className={styles.cardDetail}>
+                        <span className={styles.cardLabel}>Supplier</span>
+                        <span className={styles.cardValue}>{item.supplierName || '-'}</span>
+                      </div>
+                      <div className={styles.cardDetail}>
+                        <span className={styles.cardLabel}>Quantity</span>
+                        <span className={styles.cardValue} style={{ color: isLowStock ? '#ef4444' : '#0f172a' }}>
+                          {item.quantity} {item.unit || 'piece'}
+                        </span>
+                      </div>
+                      <div className={styles.cardDetail}>
+                        <span className={styles.cardLabel}>Reorder Level</span>
+                        <span className={styles.cardValue} style={{ color: isLowStock ? '#dc2626' : '#16a34a' }}>
+                          {isLowStock ? '⚠️' : '✓'} {item.reorderLevel}
+                        </span>
+                      </div>
+                      <div className={styles.cardDetail}>
+                        <span className={styles.cardLabel}>Price</span>
+                        <span className={styles.cardValue}>{parseFloat(item.price).toFixed(2)} Birr</span>
+                      </div>
+                    </div>
+
+                    <div className={styles.cardActions}>
+                      <button
+                        onClick={() => setAdjustingStock(item)}
+                        className={styles.cardButton}
+                        style={{
+                          backgroundColor: '#ecfdf5',
+                          color: '#059669',
+                          borderColor: '#a7f3d0'
+                        }}
+                      >
+                        📊 Stock
+                      </button>
+                      <button
+                        onClick={() => setEditingItem(item)}
+                        className={styles.cardButton}
+                        style={{
+                          backgroundColor: '#eff6ff',
+                          color: '#2563eb',
+                          borderColor: '#bfdbfe'
+                        }}
+                      >
+                        ✏️ Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(item.id)}
+                        className={styles.cardButton}
+                        style={{
+                          backgroundColor: '#fef2f2',
+                          color: '#dc2626',
+                          borderColor: '#fecaca'
+                        }}
+                      >
+                        🗑️ Delete
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
         </div>
 
         {adjustingStock && (
