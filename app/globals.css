@@ -80,14 +80,26 @@ button:active {
     display: block;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    white-space: nowrap;
   }
   
   /* Make containers responsive */
   div[style*="maxWidth"] {
     max-width: 100% !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  /* Adjust button sizes on mobile */
+  button, a[style*="padding"] {
+    font-size: 0.875rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  /* Stack navigation links vertically on very small screens */
+  @media (max-width: 480px) {
+    a[href^="/"] {
+      font-size: 0.8125rem !important;
+    }
   }
 }
 

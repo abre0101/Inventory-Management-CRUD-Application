@@ -106,17 +106,17 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
 
   const inputStyle = {
     width: '100%',
-    padding: '0.625rem 0.875rem',
+    padding: 'clamp(0.5rem, 2vw, 0.625rem) clamp(0.625rem, 2vw, 0.875rem)',
     border: '2px solid #e2e8f0',
     borderRadius: '0.5rem',
-    fontSize: '0.9375rem',
+    fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)',
     transition: 'all 0.2s ease',
     backgroundColor: '#ffffff',
   };
 
   const labelStyle = {
     display: 'block',
-    fontSize: '0.875rem',
+    fontSize: 'clamp(0.8125rem, 2vw, 0.875rem)',
     fontWeight: '600',
     marginBottom: '0.5rem',
     color: '#334155',
@@ -124,8 +124,8 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.75rem, 2vw, 1rem)' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'clamp(0.75rem, 2vw, 1rem)' }}>
         <div>
           <label style={labelStyle}>SKU {item ? '' : '(Auto-generated)'}</label>
           <input
@@ -163,7 +163,7 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
         />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'clamp(0.75rem, 2vw, 1rem)' }}>
         <div>
           <label style={labelStyle}>Category</label>
           <select
@@ -193,14 +193,14 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
             ))}
           </select>
           {formData.categoryId && suppliers.length === 0 && (
-            <p style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '0.25rem' }}>
+            <p style={{ fontSize: 'clamp(0.6875rem, 2vw, 0.75rem)', color: '#ef4444', marginTop: '0.25rem' }}>
               No suppliers available for this category
             </p>
           )}
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '1rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 'clamp(0.75rem, 2vw, 1rem)' }}>
         <div>
           <label style={labelStyle}>Quantity *</label>
           <input
@@ -253,19 +253,21 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid #e2e8f0' }}>
+      <div style={{ display: 'flex', gap: 'clamp(0.5rem, 2vw, 0.75rem)', marginTop: 'clamp(1rem, 3vw, 1.5rem)', paddingTop: 'clamp(1rem, 3vw, 1.5rem)', borderTop: '1px solid #e2e8f0', flexWrap: 'wrap' }}>
         <button 
           type="submit" 
           style={{
-            padding: '0.75rem 2rem',
+            padding: 'clamp(0.625rem, 2vw, 0.75rem) clamp(1.5rem, 3vw, 2rem)',
             backgroundColor: '#3b82f6',
             color: 'white',
             borderRadius: '0.5rem',
             border: 'none',
             cursor: 'pointer',
             fontWeight: '600',
-            fontSize: '0.9375rem',
+            fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)',
             boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+            flex: '1 1 auto',
+            minWidth: 'fit-content'
           }}
           onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
           onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
@@ -276,14 +278,16 @@ export default function ProductForm({ item, onSubmit, onCancel }: ProductFormPro
           type="button" 
           onClick={onCancel} 
           style={{
-            padding: '0.75rem 2rem',
+            padding: 'clamp(0.625rem, 2vw, 0.75rem) clamp(1.5rem, 3vw, 2rem)',
             backgroundColor: '#f1f5f9',
             color: '#475569',
             borderRadius: '0.5rem',
             border: '2px solid #e2e8f0',
             cursor: 'pointer',
             fontWeight: '600',
-            fontSize: '0.9375rem',
+            fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)',
+            flex: '1 1 auto',
+            minWidth: 'fit-content'
           }}
           onMouseOver={(e) => {
             e.currentTarget.style.backgroundColor = '#e2e8f0';
