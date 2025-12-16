@@ -188,7 +188,7 @@ export default function Home() {
                   🏢 Suppliers
                 </Link>
                 <Link href="/categories" className={styles.navLink}>
-                  �n Categories
+                  📂 Categories
                 </Link>
                 <Link href="/suppliers-manage" className={styles.navLink}>
                   ⚙️ Manage Suppliers
