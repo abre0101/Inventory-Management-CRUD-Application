@@ -57,7 +57,6 @@ export default function SuppliersManagePage() {
       const data = await res.json();
       supplierId = data.id;
       
-      // Delete existing category relationships
       await fetch(`/api/category-suppliers?supplierId=${supplierId}`, {
         method: 'DELETE',
       });
@@ -71,7 +70,6 @@ export default function SuppliersManagePage() {
       supplierId = data.id;
     }
 
-    // Add new category relationships
     if (supplierId && formData.categoryIds.length > 0) {
       for (const categoryId of formData.categoryIds) {
         await fetch('/api/category-suppliers', {
@@ -91,7 +89,6 @@ export default function SuppliersManagePage() {
   const handleEdit = async (supplier: any) => {
     setEditingSupplier(supplier);
     
-    // Fetch existing category relationships
     try {
       const res = await fetch(`/api/suppliers/${supplier.id}/categories`);
       const existingCategoryIds = await res.json();
@@ -136,49 +133,15 @@ export default function SuppliersManagePage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc', padding: '2rem 1.5rem' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ 
-          backgroundColor: 'white', 
-          padding: '2rem', 
-          borderRadius: '1rem', 
-          marginBottom: '2rem',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-          border: '1px solid #e2e8f0'
-        }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+    <div className={styles.container}>
+      <div className={styles.wrapper}>
+        <div className={styles.header}>
+          <div className={styles.headerContent}>
             <div>
-              <Link 
-                href="/" 
-                style={{ 
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.5rem 1rem',
-                  backgroundColor: '#f1f5f9',
-                  color: '#475569',
-                  textDecoration: 'none',
-                  borderRadius: '0.5rem',
-                  border: '2px solid #e2e8f0',
-                  fontSize: '0.875rem',
-                  fontWeight: '600',
-                  marginBottom: '1rem',
-                  transition: 'all 0.2s',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#e2e8f0';
-                  e.currentTarget.style.borderColor = '#cbd5e1';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#f1f5f9';
-                  e.currentTarget.style.borderColor = '#e2e8f0';
-                }}
-              >
+              <Link href="/" className={styles.backButton}>
                 ← Back to Inventory
               </Link>
-              <h1 style={{ fontSize: '2rem', fontWeight: '700', color: '#0f172a' }}>
-                🏢 Manage Suppliers
-              </h1>
+              <h1 className={styles.title}>🏢 Manage Suppliers</h1>
             </div>
             <button
               onClick={() => {
@@ -186,16 +149,7 @@ export default function SuppliersManagePage() {
                 setEditingSupplier(null);
                 setFormData({ name: '', contactPerson: '', email: '', phone: '', address: '', categoryIds: [] });
               }}
-              style={{
-                padding: '0.75rem 1.5rem',
-                backgroundColor: '#3b82f6',
-                color: 'white',
-                borderRadius: '0.5rem',
-                border: 'none',
-                cursor: 'pointer',
-                fontWeight: '600',
-                fontSize: '0.9375rem',
-              }}
+              className={styles.addButton}
             >
               ➕ Add Supplier
             </button>
@@ -203,134 +157,77 @@ export default function SuppliersManagePage() {
         </div>
 
         {showForm && (
-          <div style={{
-            backgroundColor: 'white',
-            padding: '2rem',
-            borderRadius: '1rem',
-            marginBottom: '2rem',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-            border: '1px solid #e2e8f0'
-          }}>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1.5rem', color: '#0f172a' }}>
+          <div className={styles.formCard}>
+            <h2 className={styles.formTitle}>
               {editingSupplier ? 'Edit Supplier' : 'New Supplier'}
             </h2>
             <form onSubmit={handleSubmit}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', color: '#334155' }}>
-                    Supplier Name *
-                  </label>
+              <div className={styles.formGrid}>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Supplier Name *</label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    style={{
-                      width: '100%',
-                      padding: '0.625rem 0.875rem',
-                      border: '2px solid #e2e8f0',
-                      borderRadius: '0.5rem',
-                      fontSize: '0.9375rem',
-                    }}
+                    className={styles.input}
                     required
                   />
                 </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', color: '#334155' }}>
-                    Contact Person
-                  </label>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Contact Person</label>
                   <input
                     type="text"
                     value={formData.contactPerson}
                     onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
-                    style={{
-                      width: '100%',
-                      padding: '0.625rem 0.875rem',
-                      border: '2px solid #e2e8f0',
-                      borderRadius: '0.5rem',
-                      fontSize: '0.9375rem',
-                    }}
+                    className={styles.input}
                   />
                 </div>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', color: '#334155' }}>
-                    Email
-                  </label>
+              <div className={styles.formGrid}>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Email</label>
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    style={{
-                      width: '100%',
-                      padding: '0.625rem 0.875rem',
-                      border: '2px solid #e2e8f0',
-                      borderRadius: '0.5rem',
-                      fontSize: '0.9375rem',
-                    }}
+                    className={styles.input}
                   />
                 </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', color: '#334155' }}>
-                    Phone
-                  </label>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Phone</label>
                   <input
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    style={{
-                      width: '100%',
-                      padding: '0.625rem 0.875rem',
-                      border: '2px solid #e2e8f0',
-                      borderRadius: '0.5rem',
-                      fontSize: '0.9375rem',
-                    }}
+                    className={styles.input}
                   />
                 </div>
               </div>
-              <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', color: '#334155' }}>
-                  Address
-                </label>
+              <div className={styles.formGroup} style={{ marginBottom: '1rem' }}>
+                <label className={styles.label}>Address</label>
                 <textarea
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  style={{
-                    width: '100%',
-                    padding: '0.625rem 0.875rem',
-                    border: '2px solid #e2e8f0',
-                    borderRadius: '0.5rem',
-                    fontSize: '0.9375rem',
-                    minHeight: '60px',
-                  }}
+                  className={styles.textarea}
                   rows={2}
                 />
               </div>
-              <div style={{ marginBottom: '1.5rem' }}>
-                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.75rem', color: '#334155' }}>
-                  Categories Supplied *
-                </label>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <div className={styles.categoriesSection}>
+                <label className={styles.label}>Categories Supplied *</label>
+                <div className={styles.categoriesGrid}>
                   {categories.map((category) => (
                     <label
                       key={category.id}
+                      className={styles.categoryCheckbox}
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        padding: '0.5rem 1rem',
                         backgroundColor: formData.categoryIds.includes(category.id) ? '#eff6ff' : '#f8fafc',
-                        border: `2px solid ${formData.categoryIds.includes(category.id) ? '#3b82f6' : '#e2e8f0'}`,
-                        borderRadius: '0.5rem',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
+                        borderColor: formData.categoryIds.includes(category.id) ? '#3b82f6' : '#e2e8f0',
                       }}
                     >
                       <input
                         type="checkbox"
                         checked={formData.categoryIds.includes(category.id)}
                         onChange={() => toggleCategory(category.id)}
-                        style={{ cursor: 'pointer' }}
                       />
                       <span style={{ fontSize: '0.875rem', fontWeight: '600', color: '#334155' }}>
                         {category.name}
@@ -339,19 +236,8 @@ export default function SuppliersManagePage() {
                   ))}
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <button
-                  type="submit"
-                  style={{
-                    padding: '0.75rem 2rem',
-                    backgroundColor: '#3b82f6',
-                    color: 'white',
-                    borderRadius: '0.5rem',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontWeight: '600',
-                  }}
-                >
+              <div className={styles.formActions}>
+                <button type="submit" className={styles.submitButton}>
                   {editingSupplier ? 'Update' : 'Create'}
                 </button>
                 <button
@@ -360,15 +246,7 @@ export default function SuppliersManagePage() {
                     setShowForm(false);
                     setEditingSupplier(null);
                   }}
-                  style={{
-                    padding: '0.75rem 2rem',
-                    backgroundColor: '#f1f5f9',
-                    color: '#475569',
-                    borderRadius: '0.5rem',
-                    border: '2px solid #e2e8f0',
-                    cursor: 'pointer',
-                    fontWeight: '600',
-                  }}
+                  className={styles.cancelButton}
                 >
                   Cancel
                 </button>
@@ -377,60 +255,31 @@ export default function SuppliersManagePage() {
           </div>
         )}
 
-        <div style={{
-          backgroundColor: 'white',
-          borderRadius: '1rem',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-          overflow: 'hidden',
-          border: '1px solid #e2e8f0'
-        }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead style={{ backgroundColor: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
+        <div className={styles.tableContainer}>
+          {/* Desktop Table */}
+          <table className={styles.table}>
+            <thead>
               <tr>
-                <th style={{ padding: '1rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem' }}>Name</th>
-                <th style={{ padding: '1rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem' }}>Contact</th>
-                <th style={{ padding: '1rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem' }}>Email</th>
-                <th style={{ padding: '1rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem' }}>Phone</th>
-                <th style={{ padding: '1rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem', width: '180px' }}>Actions</th>
+                <th>Name</th>
+                <th>Contact</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th style={{ width: '180px' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {suppliers.map((supplier) => (
-                <tr key={supplier.id} style={{ borderTop: '1px solid #e2e8f0' }}>
-                  <td style={{ padding: '1rem 1.5rem', fontWeight: '600', color: '#0f172a' }}>{supplier.name}</td>
-                  <td style={{ padding: '1rem 1.5rem', color: '#64748b' }}>{supplier.contactPerson || '-'}</td>
-                  <td style={{ padding: '1rem 1.5rem', color: '#3b82f6', fontSize: '0.875rem' }}>{supplier.email || '-'}</td>
-                  <td style={{ padding: '1rem 1.5rem', color: '#64748b' }}>{supplier.phone || '-'}</td>
-                  <td style={{ padding: '1rem 1.5rem' }}>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      <button
-                        onClick={() => handleEdit(supplier)}
-                        style={{
-                          padding: '0.375rem 0.75rem',
-                          backgroundColor: '#eff6ff',
-                          color: '#2563eb',
-                          border: '1px solid #bfdbfe',
-                          borderRadius: '0.375rem',
-                          cursor: 'pointer',
-                          fontSize: '0.8125rem',
-                          fontWeight: '600',
-                        }}
-                      >
+                <tr key={supplier.id}>
+                  <td style={{ fontWeight: '600', color: '#0f172a' }}>{supplier.name}</td>
+                  <td style={{ color: '#64748b' }}>{supplier.contactPerson || '-'}</td>
+                  <td style={{ color: '#3b82f6', fontSize: '0.875rem' }}>{supplier.email || '-'}</td>
+                  <td style={{ color: '#64748b' }}>{supplier.phone || '-'}</td>
+                  <td>
+                    <div className={styles.actionButtons}>
+                      <button onClick={() => handleEdit(supplier)} className={styles.editButton}>
                         ✏️ Edit
                       </button>
-                      <button
-                        onClick={() => handleDelete(supplier.id)}
-                        style={{
-                          padding: '0.375rem 0.75rem',
-                          backgroundColor: '#fef2f2',
-                          color: '#dc2626',
-                          border: '1px solid #fecaca',
-                          borderRadius: '0.375rem',
-                          cursor: 'pointer',
-                          fontSize: '0.8125rem',
-                          fontWeight: '600',
-                        }}
-                      >
+                      <button onClick={() => handleDelete(supplier.id)} className={styles.deleteButton}>
                         🗑️ Delete
                       </button>
                     </div>
@@ -439,6 +288,31 @@ export default function SuppliersManagePage() {
               ))}
             </tbody>
           </table>
+
+          {/* Mobile Card View */}
+          <div className={styles.mobileCard}>
+            {suppliers.map((supplier) => (
+              <div key={supplier.id} className={styles.supplierCard}>
+                <div className={styles.cardHeader}>
+                  <div className={styles.cardTitle}>{supplier.name}</div>
+                </div>
+                <div className={styles.cardDetails}>
+                  {supplier.contactPerson && <div>👤 {supplier.contactPerson}</div>}
+                  {supplier.email && <div>📧 {supplier.email}</div>}
+                  {supplier.phone && <div>📞 {supplier.phone}</div>}
+                  {supplier.address && <div>📍 {supplier.address}</div>}
+                </div>
+                <div className={styles.cardActions}>
+                  <button onClick={() => handleEdit(supplier)} className={styles.editButton}>
+                    ✏️ Edit
+                  </button>
+                  <button onClick={() => handleDelete(supplier.id)} className={styles.deleteButton}>
+                    🗑️ Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
