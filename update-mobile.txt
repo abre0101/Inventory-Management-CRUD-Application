@@ -1,0 +1,3 @@
+I'll update the remaining pages (categories, suppliers, suppliers-manage) with mobile responsiveness.
+
+All pages will use the shared.module.css for consistent mobile card layouts.

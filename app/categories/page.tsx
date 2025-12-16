@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import styles from '../shared.module.css';
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -64,47 +65,22 @@ export default function CategoriesPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc', padding: '2rem 1.5rem' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+    <div className={styles.container}>
+      <div className={styles.wrapper}>
         <div style={{ 
           backgroundColor: 'white', 
-          padding: '2rem', 
+          padding: 'clamp(1rem, 3vw, 2rem)', 
           borderRadius: '1rem', 
-          marginBottom: '2rem',
+          marginBottom: 'clamp(1rem, 3vw, 2rem)',
           boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
           border: '1px solid #e2e8f0'
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1rem' }}>
             <div>
-              <Link 
-                href="/" 
-                style={{ 
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.5rem 1rem',
-                  backgroundColor: '#f1f5f9',
-                  color: '#475569',
-                  textDecoration: 'none',
-                  borderRadius: '0.5rem',
-                  border: '2px solid #e2e8f0',
-                  fontSize: '0.875rem',
-                  fontWeight: '600',
-                  marginBottom: '1rem',
-                  transition: 'all 0.2s',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#e2e8f0';
-                  e.currentTarget.style.borderColor = '#cbd5e1';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#f1f5f9';
-                  e.currentTarget.style.borderColor = '#e2e8f0';
-                }}
-              >
+              <Link href="/" className={styles.backLink}>
                 ← Back to Inventory
               </Link>
-              <h1 style={{ fontSize: '2rem', fontWeight: '700', color: '#0f172a' }}>
+              <h1 className={styles.title}>
                 📂 Categories
               </h1>
             </div>
@@ -115,14 +91,15 @@ export default function CategoriesPage() {
                 setFormData({ name: '', skuPrefix: '', description: '' });
               }}
               style={{
-                padding: '0.75rem 1.5rem',
+                padding: 'clamp(0.625rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem)',
                 backgroundColor: '#3b82f6',
                 color: 'white',
                 borderRadius: '0.5rem',
                 border: 'none',
                 cursor: 'pointer',
                 fontWeight: '600',
-                fontSize: '0.9375rem',
+                fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)',
+                width: '100%',
               }}
             >
               ➕ Add Category
@@ -238,27 +215,22 @@ export default function CategoriesPage() {
           </div>
         )}
 
-        <div style={{
-          backgroundColor: 'white',
-          borderRadius: '1rem',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-          overflow: 'hidden',
-          border: '1px solid #e2e8f0'
-        }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead style={{ backgroundColor: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
+        <div className={styles.tableContainer}>
+          {/* Desktop Table */}
+          <table className={`${styles.table} ${styles.desktopTable}`}>
+            <thead>
               <tr>
-                <th style={{ padding: '1rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem' }}>Name</th>
-                <th style={{ padding: '1rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem' }}>SKU Prefix</th>
-                <th style={{ padding: '1rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem' }}>Description</th>
-                <th style={{ padding: '1rem 1.5rem', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: '0.875rem', width: '180px' }}>Actions</th>
+                <th>Name</th>
+                <th>SKU Prefix</th>
+                <th>Description</th>
+                <th style={{ width: '180px' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {categories.map((category) => (
-                <tr key={category.id} style={{ borderTop: '1px solid #e2e8f0' }}>
-                  <td style={{ padding: '1rem 1.5rem', fontWeight: '600', color: '#0f172a' }}>{category.name}</td>
-                  <td style={{ padding: '1rem 1.5rem' }}>
+                <tr key={category.id}>
+                  <td style={{ fontWeight: '600', color: '#0f172a' }}>{category.name}</td>
+                  <td>
                     <span style={{
                       backgroundColor: '#f1f5f9',
                       padding: '0.25rem 0.625rem',
@@ -271,8 +243,8 @@ export default function CategoriesPage() {
                       {category.skuPrefix}
                     </span>
                   </td>
-                  <td style={{ padding: '1rem 1.5rem', color: '#64748b' }}>{category.description || '-'}</td>
-                  <td style={{ padding: '1rem 1.5rem' }}>
+                  <td style={{ color: '#64748b' }}>{category.description || '-'}</td>
+                  <td>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                       <button
                         onClick={() => handleEdit(category)}
@@ -310,6 +282,58 @@ export default function CategoriesPage() {
               ))}
             </tbody>
           </table>
+
+          {/* Mobile Card View */}
+          <div className={styles.mobileCard}>
+            {categories.map((category) => (
+              <div key={category.id} className={styles.card}>
+                <div className={styles.cardHeader}>
+                  <div className={styles.cardTitle}>{category.name}</div>
+                  <span 
+                    className={styles.cardBadge}
+                    style={{
+                      backgroundColor: '#f1f5f9',
+                      color: '#3b82f6',
+                      fontFamily: 'monospace',
+                    }}
+                  >
+                    {category.skuPrefix}
+                  </span>
+                </div>
+                
+                {category.description && (
+                  <div style={{ marginBottom: '0.75rem', color: '#64748b', fontSize: '0.875rem' }}>
+                    {category.description}
+                  </div>
+                )}
+
+                <div className={styles.cardActions}>
+                  <button
+                    onClick={() => handleEdit(category)}
+                    className={styles.cardButton}
+                    style={{
+                      backgroundColor: '#eff6ff',
+                      color: '#2563eb',
+                      borderColor: '#bfdbfe',
+                    }}
+                  >
+                    ✏️ Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(category.id)}
+                    className={styles.cardButton}
+                    style={{
+                      backgroundColor: '#fef2f2',
+                      color: '#dc2626',
+                      borderColor: '#fecaca',
+                    }}
+                  >
+                    🗑️ Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
