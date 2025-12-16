@@ -65,9 +65,14 @@ export default function Home() {
   };
 
   const fetchCategories = async () => {
-    const res = await fetch('/api/categories');
-    const data = await res.json();
-    setCategories(data);
+    try {
+      const res = await fetch('/api/categories');
+      const data = await res.json();
+      setCategories(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      setCategories([]);
+    }
   };
 
   const handleCreate = async (data: any) => {
@@ -250,7 +255,7 @@ export default function Home() {
                   className={styles.select}
                 >
                   <option value="">All Categories</option>
-                  {categories.map((cat) => (
+                  {Array.isArray(categories) && categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>{cat.name}</option>
                   ))}
                 </select>
