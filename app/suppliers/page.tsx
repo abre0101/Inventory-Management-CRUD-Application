@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import styles from './page.module.css';
 
 export default function SuppliersPage() {
   const [suppliers, setSuppliers] = useState<any[]>([]);
@@ -44,89 +45,40 @@ export default function SuppliersPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', padding: '2rem' }}>
-      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        <div style={{ marginBottom: '2rem' }}>
-          <Link 
-            href="/" 
-            style={{ 
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.5rem 1rem',
-              backgroundColor: '#f1f5f9',
-              color: '#475569',
-              textDecoration: 'none',
-              borderRadius: '0.5rem',
-              border: '2px solid #e2e8f0',
-              fontSize: '0.875rem',
-              fontWeight: '600',
-              marginBottom: '1rem',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#e2e8f0';
-              e.currentTarget.style.borderColor = '#cbd5e1';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#f1f5f9';
-              e.currentTarget.style.borderColor = '#e2e8f0';
-            }}
-          >
+    <div className={styles.container}>
+      <div className={styles.wrapper}>
+        <div className={styles.header}>
+          <Link href="/" className={styles.backButton}>
             ← Back to Inventory
           </Link>
-          <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#111827' }}>
-            Suppliers & Products
+          <h1 className={styles.title}>
+            🏢 Suppliers & Products
           </h1>
         </div>
 
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '3rem', color: '#6b7280' }}>Loading...</div>
+          <div className={styles.loading}>Loading...</div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '1.5rem' }}>
+          <div className={styles.grid}>
             {/* Suppliers List */}
-            <div style={{
-              backgroundColor: 'white',
-              borderRadius: '0.5rem',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-              padding: '1.5rem',
-            }}>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '1rem', color: '#111827' }}>
-                Suppliers
-              </h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <div className={styles.card}>
+              <h2 className={styles.cardTitle}>Suppliers</h2>
+              <div className={styles.suppliersList}>
                 {suppliers.length === 0 ? (
-                  <p style={{ color: '#6b7280', textAlign: 'center', padding: '2rem' }}>
-                    No suppliers found
-                  </p>
+                  <p className={styles.emptyState}>No suppliers found</p>
                 ) : (
                   suppliers.map((supplier) => (
                     <button
                       key={supplier.id}
                       onClick={() => setSelectedSupplier(supplier.id)}
-                      style={{
-                        padding: '1rem',
-                        textAlign: 'left',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '0.5rem',
-                        backgroundColor: selectedSupplier === supplier.id ? '#eff6ff' : 'white',
-                        borderColor: selectedSupplier === supplier.id ? '#2563eb' : '#e5e7eb',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                      }}
+                      className={`${styles.supplierButton} ${selectedSupplier === supplier.id ? styles.active : ''}`}
                     >
-                      <div style={{ fontWeight: '600', color: '#111827', marginBottom: '0.25rem' }}>
-                        {supplier.name}
-                      </div>
+                      <div className={styles.supplierName}>{supplier.name}</div>
                       {supplier.contactPerson && (
-                        <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
-                          {supplier.contactPerson}
-                        </div>
+                        <div className={styles.supplierContact}>{supplier.contactPerson}</div>
                       )}
                       {supplier.email && (
-                        <div style={{ fontSize: '0.875rem', color: '#2563eb' }}>
-                          {supplier.email}
-                        </div>
+                        <div className={styles.supplierEmail}>{supplier.email}</div>
                       )}
                     </button>
                   ))
@@ -135,58 +87,30 @@ export default function SuppliersPage() {
             </div>
 
             {/* Supplier Products */}
-            <div style={{
-              backgroundColor: 'white',
-              borderRadius: '0.5rem',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-              padding: '1.5rem',
-            }}>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '1rem', color: '#111827' }}>
-                Products
-              </h2>
+            <div className={styles.card}>
+              <h2 className={styles.cardTitle}>Products</h2>
               {!selectedSupplier ? (
-                <p style={{ color: '#6b7280', textAlign: 'center', padding: '3rem' }}>
-                  Select a supplier to view their products
-                </p>
+                <p className={styles.emptyState}>Select a supplier to view their products</p>
               ) : supplierProducts.length === 0 ? (
-                <p style={{ color: '#6b7280', textAlign: 'center', padding: '3rem' }}>
-                  No products found for this supplier
-                </p>
+                <p className={styles.emptyState}>No products found for this supplier</p>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div className={styles.productsList}>
                   {supplierProducts.map((product) => (
-                    <div
-                      key={product.id}
-                      style={{
-                        padding: '1rem',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '0.5rem',
-                      }}
-                    >
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
-                        <div>
-                          <div style={{ fontWeight: '600', color: '#111827', marginBottom: '0.25rem' }}>
-                            {product.name}
-                          </div>
-                          <div style={{ fontSize: '0.875rem', color: '#6b7280', fontFamily: 'monospace' }}>
-                            SKU: {product.sku}
-                          </div>
+                    <div key={product.id} className={styles.productCard}>
+                      <div className={styles.productHeader}>
+                        <div className={styles.productInfo}>
+                          <div className={styles.productName}>{product.name}</div>
+                          <div className={styles.productSku}>SKU: {product.sku}</div>
                           {product.description && (
-                            <div style={{ fontSize: '0.875rem', color: '#6b7280', marginTop: '0.5rem' }}>
-                              {product.description}
-                            </div>
+                            <div className={styles.productDescription}>{product.description}</div>
                           )}
                         </div>
-                        <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontSize: '1.125rem', fontWeight: '600', color: '#111827' }}>
+                        <div className={styles.productPrice}>
+                          <div className={styles.priceValue}>
                             {parseFloat(product.price).toFixed(2)} Birr
-                            <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '500', display: 'block' }}>
-                              per {product.unit || 'piece'}
-                            </span>
+                            <span className={styles.priceUnit}>per {product.unit || 'piece'}</span>
                           </div>
-                          <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
-                            Stock: {product.quantity}
-                          </div>
+                          <div className={styles.productStock}>Stock: {product.quantity}</div>
                         </div>
                       </div>
                     </div>

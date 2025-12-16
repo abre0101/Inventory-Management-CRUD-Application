@@ -1,0 +1,251 @@
+.container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding: 1.5rem 1rem;
+}
+
+.wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #f1f5f9;
+  color: #475569;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  border: 2px solid #e2e8f0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  transition: all 0.2s;
+}
+
+.backButton:hover {
+  background-color: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #111827;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #6b7280;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1.5rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.suppliersList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.supplierButton {
+  padding: 1rem;
+  text-align: left;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.supplierButton:hover {
+  background-color: #f9fafb;
+}
+
+.supplierButton.active {
+  background-color: #eff6ff;
+  border-color: #2563eb;
+}
+
+.supplierName {
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.supplierContact {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.supplierEmail {
+  font-size: 0.875rem;
+  color: #2563eb;
+}
+
+.productsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.productCard {
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+}
+
+.productHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.productInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.productName {
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.25rem;
+  word-break: break-word;
+}
+
+.productSku {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-family: monospace;
+}
+
+.productDescription {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+.productPrice {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.priceValue {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.priceUnit {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+  display: block;
+}
+
+.productStock {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.emptyState {
+  color: #6b7280;
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem 0.75rem;
+  }
+
+  .header {
+    margin-bottom: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+
+  .cardTitle {
+    font-size: 1.125rem;
+  }
+
+  .supplierButton {
+    padding: 0.875rem;
+  }
+
+  .productHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .productPrice {
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 0.75rem;
+  }
+
+  .priceValue {
+    font-size: 1rem;
+  }
+
+  .priceUnit {
+    display: inline;
+    margin-left: 0.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .productName {
+    font-size: 0.9375rem;
+  }
+
+  .emptyState {
+    padding: 2rem 1rem;
+    font-size: 0.875rem;
+  }
+}
