@@ -74,35 +74,6 @@ button:active {
   transform: translateY(0);
 }
 
-/* Mobile responsive tables */
-@media (max-width: 768px) {
-  table {
-    display: block;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  /* Make containers responsive */
-  div[style*="maxWidth"] {
-    max-width: 100% !important;
-    padding-left: 0.75rem !important;
-    padding-right: 0.75rem !important;
-  }
-
-  /* Adjust button sizes on mobile */
-  button, a[style*="padding"] {
-    font-size: 0.875rem !important;
-    padding: 0.5rem 0.75rem !important;
-  }
-
-  /* Stack navigation links vertically on very small screens */
-  @media (max-width: 480px) {
-    a[href^="/"] {
-      font-size: 0.8125rem !important;
-    }
-  }
-}
-
 /* Ensure images and content don't overflow */
 img, video, iframe {
   max-width: 100%;
@@ -114,4 +85,55 @@ img, video, iframe {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  /* Make tables scrollable horizontally */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+
+  /* Ensure table container is scrollable */
+  table thead,
+  table tbody,
+  table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  /* Better touch targets */
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Disable hover effects on mobile */
+  button:hover {
+    transform: none;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  body {
+    font-size: 13px;
+  }
+
+  /* Reduce padding on very small screens */
+  * {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  }
 }

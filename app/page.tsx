@@ -5,6 +5,7 @@ import ProductForm from './components/ProductForm';
 import StockAdjustmentModal from './components/StockAdjustmentModal';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import styles from './page.module.css';
 
 export default function Home() {
   const [items, setItems] = useState<any[]>([]);
@@ -162,125 +163,41 @@ export default function Home() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc', padding: 'clamp(1rem, 3vw, 2rem) clamp(0.75rem, 3vw, 1.5rem)' }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+    <div className={styles.container}>
+      <div className={styles.wrapper}>
         {/* Header */}
-        <div style={{ 
-          backgroundColor: 'white', 
-          padding: 'clamp(1rem, 3vw, 2rem)', 
-          borderRadius: '1rem', 
-          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-          marginBottom: 'clamp(1rem, 3vw, 2rem)',
-          border: '1px solid #e2e8f0'
-        }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <div className={styles.header}>
+          <div className={styles.headerContent}>
             <div>
-              <h1 style={{ 
-                fontSize: 'clamp(1.5rem, 4vw, 2.25rem)', 
-                fontWeight: '700', 
-                color: '#0f172a',
-                marginBottom: '0.75rem',
-                letterSpacing: '-0.02em'
-              }}>
+              <h1 className={styles.title}>
                 📦 Inventory Management
               </h1>
-              <div style={{ display: 'flex', gap: 'clamp(0.75rem, 2vw, 1.5rem)', marginTop: '0.75rem', flexWrap: 'wrap' }}>
-                <Link href="/dashboard" style={{ 
-                  color: '#3b82f6', 
-                  textDecoration: 'none', 
-                  fontSize: 'clamp(0.8125rem, 2vw, 0.9375rem)',
-                  fontWeight: '500',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.375rem',
-                  transition: 'color 0.2s'
-                }}>
+              <nav className={styles.navigation}>
+                <Link href="/dashboard" className={styles.navLink}>
                   📊 Dashboard
                 </Link>
-                <Link href="/stock-movements" style={{ 
-                  color: '#3b82f6', 
-                  textDecoration: 'none', 
-                  fontSize: 'clamp(0.8125rem, 2vw, 0.9375rem)',
-                  fontWeight: '500',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.375rem',
-                  transition: 'color 0.2s'
-                }}>
+                <Link href="/stock-movements" className={styles.navLink}>
                   📜 Stock History
                 </Link>
-                <Link href="/suppliers" style={{ 
-                  color: '#3b82f6', 
-                  textDecoration: 'none', 
-                  fontSize: 'clamp(0.8125rem, 2vw, 0.9375rem)',
-                  fontWeight: '500',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.375rem',
-                  transition: 'color 0.2s'
-                }}>
+                <Link href="/suppliers" className={styles.navLink}>
                   🏢 Suppliers
                 </Link>
-                <Link href="/categories" style={{ 
-                  color: '#3b82f6', 
-                  textDecoration: 'none', 
-                  fontSize: 'clamp(0.8125rem, 2vw, 0.9375rem)',
-                  fontWeight: '500',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.375rem',
-                  transition: 'color 0.2s'
-                }}>
-                  📂 Categories
+                <Link href="/categories" className={styles.navLink}>
+                  �n Categories
                 </Link>
-                <Link href="/suppliers-manage" style={{ 
-                  color: '#3b82f6', 
-                  textDecoration: 'none', 
-                  fontSize: 'clamp(0.8125rem, 2vw, 0.9375rem)',
-                  fontWeight: '500',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.375rem',
-                  transition: 'color 0.2s'
-                }}>
+                <Link href="/suppliers-manage" className={styles.navLink}>
                   ⚙️ Manage Suppliers
                 </Link>
-              </div>
+              </nav>
             </div>
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', width: '100%' }}>
+            <div className={styles.actions}>
               <button
                 onClick={handleExport}
-                style={{
-                  padding: 'clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 2vw, 1.25rem)',
-                  backgroundColor: '#10b981',
-                  color: 'white',
-                  borderRadius: '0.5rem',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontWeight: '600',
-                  fontSize: 'clamp(0.8125rem, 2vw, 0.9375rem)',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                  flex: '1 1 auto',
-                  minWidth: 'fit-content'
-                }}
+                className={`${styles.button} ${styles.buttonSuccess}`}
               >
                 📥 Export
               </button>
-              <label style={{
-                padding: 'clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 2vw, 1.25rem)',
-                backgroundColor: '#8b5cf6',
-                color: 'white',
-                borderRadius: '0.5rem',
-                cursor: importing ? 'not-allowed' : 'pointer',
-                fontWeight: '600',
-                fontSize: 'clamp(0.8125rem, 2vw, 0.9375rem)',
-                opacity: importing ? 0.6 : 1,
-                display: 'inline-block',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                flex: '1 1 auto',
-                minWidth: 'fit-content',
-                textAlign: 'center'
-              }}>
+              <label className={`${styles.button} ${styles.buttonPurple}`} style={{ opacity: importing ? 0.6 : 1, cursor: importing ? 'not-allowed' : 'pointer' }}>
                 {importing ? '⏳ Importing...' : '📤 Import'}
                 <input
                   type="file"
@@ -293,38 +210,13 @@ export default function Home() {
               <a
                 href="/inventory-template.csv"
                 download
-                style={{
-                  padding: 'clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 2vw, 1.25rem)',
-                  backgroundColor: '#64748b',
-                  color: 'white',
-                  borderRadius: '0.5rem',
-                  textDecoration: 'none',
-                  fontWeight: '600',
-                  fontSize: 'clamp(0.8125rem, 2vw, 0.9375rem)',
-                  display: 'inline-block',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                  flex: '1 1 auto',
-                  minWidth: 'fit-content',
-                  textAlign: 'center'
-                }}
+                className={`${styles.button} ${styles.buttonGray}`}
               >
                 📄 Template
               </a>
               <button
                 onClick={() => setShowForm(true)}
-                style={{
-                  padding: 'clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 2vw, 1.5rem)',
-                  backgroundColor: '#3b82f6',
-                  color: 'white',
-                  borderRadius: '0.5rem',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontWeight: '600',
-                  fontSize: 'clamp(0.8125rem, 2vw, 0.9375rem)',
-                  boxShadow: '0 2px 4px rgba(59, 130, 246, 0.3)',
-                  flex: '1 1 auto',
-                  minWidth: 'fit-content'
-                }}
+                className={`${styles.button} ${styles.buttonPrimary}`}
               >
                 ➕ Add Product
               </button>
@@ -333,17 +225,10 @@ export default function Home() {
         </div>
 
         {/* Search and Filters */}
-        <div style={{ 
-          backgroundColor: 'white', 
-          padding: 'clamp(1rem, 3vw, 1.75rem)', 
-          borderRadius: '1rem', 
-          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-          marginBottom: 'clamp(1rem, 3vw, 1.5rem)',
-          border: '1px solid #e2e8f0'
-        }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: 'clamp(0.8125rem, 2vw, 0.875rem)', fontWeight: '600', marginBottom: '0.5rem', color: '#334155' }}>
+        <div className={styles.filterSection}>
+          <div className={styles.filterGrid}>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>
                 🔍 Search
               </label>
               <input
@@ -351,32 +236,18 @@ export default function Home() {
                 placeholder="Search by name, SKU..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: 'clamp(0.5rem, 2vw, 0.625rem) clamp(0.625rem, 2vw, 0.875rem)',
-                  border: '2px solid #e2e8f0',
-                  borderRadius: '0.5rem',
-                  fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)',
-                  backgroundColor: '#ffffff',
-                }}
+                className={styles.input}
               />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
-              <div>
-                <label style={{ display: 'block', fontSize: 'clamp(0.8125rem, 2vw, 0.875rem)', fontWeight: '600', marginBottom: '0.5rem', color: '#334155' }}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>
                   📂 Category
                 </label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: 'clamp(0.5rem, 2vw, 0.625rem) clamp(0.625rem, 2vw, 0.875rem)',
-                    border: '2px solid #e2e8f0',
-                    borderRadius: '0.5rem',
-                    fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)',
-                    backgroundColor: '#ffffff',
-                  }}
+                  className={styles.select}
                 >
                   <option value="">All Categories</option>
                   {categories.map((cat) => (
@@ -390,7 +261,7 @@ export default function Home() {
                   alignItems: 'center', 
                   gap: '0.5rem', 
                   cursor: 'pointer',
-                  padding: 'clamp(0.5rem, 2vw, 0.625rem) clamp(0.625rem, 2vw, 0.875rem)',
+                  padding: '0.625rem 0.875rem',
                   backgroundColor: showLowStock ? '#fef2f2' : '#f8fafc',
                   borderRadius: '0.5rem',
                   border: '2px solid',
@@ -405,7 +276,7 @@ export default function Home() {
                     onChange={(e) => setShowLowStock(e.target.checked)}
                     style={{ width: '1rem', height: '1rem', cursor: 'pointer' }}
                   />
-                  <span style={{ fontSize: 'clamp(0.8125rem, 2vw, 0.875rem)', color: '#334155', fontWeight: '600', whiteSpace: 'nowrap' }}>
+                  <span style={{ fontSize: '0.875rem', color: '#334155', fontWeight: '600', whiteSpace: 'nowrap' }}>
                     ⚠️ Low Stock
                   </span>
                 </label>
@@ -444,34 +315,27 @@ export default function Home() {
           </div>
         )}
 
-        <div style={{
-          backgroundColor: 'white',
-          borderRadius: '1rem',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-          overflow: 'auto',
-          border: '1px solid #e2e8f0',
-          WebkitOverflowScrolling: 'touch'
-        }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '800px' }}>
-            <thead style={{ backgroundColor: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
+        <div className={styles.tableContainer}>
+          <table className={styles.table}>
+            <thead>
               <tr>
-                <th style={{ padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: 'clamp(0.75rem, 2vw, 0.875rem)', letterSpacing: '0.05em', textTransform: 'uppercase', minWidth: '80px' }}>SKU</th>
-                <th style={{ padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: 'clamp(0.75rem, 2vw, 0.875rem)', letterSpacing: '0.05em', textTransform: 'uppercase', minWidth: '150px' }}>Product Name</th>
-                <th style={{ padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: 'clamp(0.75rem, 2vw, 0.875rem)', letterSpacing: '0.05em', textTransform: 'uppercase', minWidth: '100px' }}>Category</th>
-                <th style={{ padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: 'clamp(0.75rem, 2vw, 0.875rem)', letterSpacing: '0.05em', textTransform: 'uppercase', minWidth: '100px' }}>Supplier</th>
-                <th style={{ padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: 'clamp(0.75rem, 2vw, 0.875rem)', letterSpacing: '0.05em', textTransform: 'uppercase', minWidth: '60px' }}>Qty</th>
-                <th style={{ padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: 'clamp(0.75rem, 2vw, 0.875rem)', letterSpacing: '0.05em', textTransform: 'uppercase', minWidth: '80px' }}>Reorder</th>
-                <th style={{ padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: 'clamp(0.75rem, 2vw, 0.875rem)', letterSpacing: '0.05em', textTransform: 'uppercase', minWidth: '90px' }}>Price</th>
-                <th style={{ padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', textAlign: 'left', fontWeight: '700', color: '#334155', fontSize: 'clamp(0.75rem, 2vw, 0.875rem)', letterSpacing: '0.05em', textTransform: 'uppercase', minWidth: '180px' }}>Actions</th>
+                <th>SKU</th>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Supplier</th>
+                <th>Qty</th>
+                <th>Reorder</th>
+                <th>Price</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {items.length === 0 ? (
                 <tr>
-                  <td colSpan={8} style={{ padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem)', textAlign: 'center', color: '#94a3b8' }}>
-                    <div style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', marginBottom: '1rem' }}>📦</div>
-                    <div style={{ fontSize: 'clamp(1rem, 3vw, 1.125rem)', fontWeight: '500', marginBottom: '0.5rem' }}>No products found</div>
-                    <div style={{ fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)' }}>Click "Add Product" to get started</div>
+                  <td colSpan={8} style={{ padding: '3rem 2rem', textAlign: 'center', color: '#94a3b8' }}>
+                    <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📦</div>
+                    <div style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '0.5rem' }}>No products found</div>
+                    <div style={{ fontSize: '0.9375rem' }}>Click "Add Product" to get started</div>
                   </td>
                 </tr>
               ) : (
@@ -479,40 +343,33 @@ export default function Home() {
                   const isLowStock = item.quantity <= item.reorderLevel;
                   return (
                     <tr key={item.id} style={{ 
-                      borderTop: '1px solid #e2e8f0', 
                       backgroundColor: isLowStock ? '#fef2f2' : 'white',
-                      transition: 'background-color 0.2s'
                     }}>
-                      <td style={{ padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', color: '#475569', fontFamily: 'monospace', fontSize: 'clamp(0.75rem, 2vw, 0.875rem)', fontWeight: '600' }}>{item.sku}</td>
-                      <td style={{ padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', color: '#0f172a', fontWeight: '600', fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)' }}>
+                      <td style={{ color: '#475569', fontFamily: 'monospace', fontWeight: '600' }}>{item.sku}</td>
+                      <td style={{ color: '#0f172a', fontWeight: '600' }}>
                         <div>{item.name}</div>
-                        {isLowStock && <span style={{ color: '#ef4444', fontSize: 'clamp(0.75rem, 2vw, 0.875rem)', fontWeight: '700', display: 'block', marginTop: '0.25rem' }}>⚠️ Low Stock</span>}
+                        {isLowStock && <span style={{ color: '#ef4444', fontSize: '0.75rem', fontWeight: '700', display: 'block', marginTop: '0.25rem' }}>⚠️ Low Stock</span>}
                       </td>
-                      <td style={{ padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', color: '#64748b', fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)' }}>
+                      <td style={{ color: '#64748b' }}>
                         <span style={{ 
                           backgroundColor: '#f1f5f9', 
                           padding: '0.25rem 0.5rem', 
                           borderRadius: '0.375rem',
-                          fontSize: 'clamp(0.75rem, 2vw, 0.875rem)',
+                          fontSize: '0.875rem',
                           fontWeight: '500',
                           display: 'inline-block'
                         }}>
                           {item.categoryName || '-'}
                         </span>
                       </td>
-                      <td style={{ padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', color: '#64748b', fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)' }}>{item.supplierName || '-'}</td>
+                      <td style={{ color: '#64748b' }}>{item.supplierName || '-'}</td>
                       <td style={{ 
-                        padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', 
                         color: isLowStock ? '#ef4444' : '#0f172a', 
-                        fontWeight: '700',
-                        fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)'
+                        fontWeight: '700'
                       }}>
                         {item.quantity}
                       </td>
-                      <td style={{ 
-                        padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', 
-                        fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)'
-                      }}>
+                      <td>
                         <div style={{
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -523,63 +380,48 @@ export default function Home() {
                           borderRadius: '0.375rem',
                           border: `1px solid ${isLowStock ? '#fecaca' : '#bbf7d0'}`,
                           fontWeight: '600',
-                          fontSize: 'clamp(0.75rem, 2vw, 0.875rem)'
+                          fontSize: '0.875rem'
                         }}>
                           {isLowStock ? '⚠️' : '✓'} {item.reorderLevel}
                         </div>
                       </td>
-                      <td style={{ padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)', color: '#0f172a', fontWeight: '600', fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)' }}>
+                      <td style={{ color: '#0f172a', fontWeight: '600' }}>
                         <div>{parseFloat(item.price).toFixed(2)} Birr</div>
-                        <span style={{ fontSize: 'clamp(0.6875rem, 2vw, 0.75rem)', color: '#64748b', fontWeight: '500' }}>
+                        <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '500' }}>
                           /{item.unit || 'piece'}
                         </span>
                       </td>
-                      <td style={{ padding: 'clamp(0.75rem, 2vw, 1.125rem) clamp(0.75rem, 2vw, 1.5rem)' }}>
-                        <div style={{ display: 'flex', gap: '0.375rem', flexWrap: 'wrap' }}>
+                      <td>
+                        <div className={styles.actionButtons}>
                           <button
                             onClick={() => setAdjustingStock(item)}
+                            className={styles.actionButton}
                             style={{
-                              padding: 'clamp(0.25rem, 2vw, 0.375rem) clamp(0.5rem, 2vw, 0.75rem)',
                               backgroundColor: '#ecfdf5',
                               color: '#059669',
-                              cursor: 'pointer',
-                              border: '1px solid #a7f3d0',
-                              borderRadius: '0.375rem',
-                              fontSize: 'clamp(0.75rem, 2vw, 0.8125rem)',
-                              fontWeight: '600',
-                              whiteSpace: 'nowrap'
+                              borderColor: '#a7f3d0'
                             }}
                           >
                             📊 Stock
                           </button>
                           <button
                             onClick={() => setEditingItem(item)}
+                            className={styles.actionButton}
                             style={{
-                              padding: 'clamp(0.25rem, 2vw, 0.375rem) clamp(0.5rem, 2vw, 0.75rem)',
                               backgroundColor: '#eff6ff',
                               color: '#2563eb',
-                              cursor: 'pointer',
-                              border: '1px solid #bfdbfe',
-                              borderRadius: '0.375rem',
-                              fontSize: 'clamp(0.75rem, 2vw, 0.8125rem)',
-                              fontWeight: '600',
-                              whiteSpace: 'nowrap'
+                              borderColor: '#bfdbfe'
                             }}
                           >
                             ✏️ Edit
                           </button>
                           <button
                             onClick={() => handleDelete(item.id)}
+                            className={styles.actionButton}
                             style={{
-                              padding: 'clamp(0.25rem, 2vw, 0.375rem) clamp(0.5rem, 2vw, 0.75rem)',
                               backgroundColor: '#fef2f2',
                               color: '#dc2626',
-                              cursor: 'pointer',
-                              border: '1px solid #fecaca',
-                              borderRadius: '0.375rem',
-                              fontSize: 'clamp(0.75rem, 2vw, 0.8125rem)',
-                              fontWeight: '600',
-                              whiteSpace: 'nowrap'
+                              borderColor: '#fecaca'
                             }}
                           >
                             🗑️ Delete
